@@ -1,0 +1,9 @@
+%p#notice= notice
+
+%p
+  %b Reading value:
+  = @reading.reading_value
+
+= link_to 'Edit', edit_reading_path(@reading)
+\|
+= link_to 'Back', readings_path

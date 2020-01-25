@@ -1,0 +1,13 @@
+= form_for [@patient, @reading] do |f|
+  - if @reading.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@reading.errors.count, "error")} prohibited this reading from being saved:"
+      %ul
+        - @reading.errors.full_messages.each do |message|
+          %li= message
+
+  .field
+    = f.label :reading_value
+    = f.text_field :reading_value
+  .actions
+    = f.submit 'Save'

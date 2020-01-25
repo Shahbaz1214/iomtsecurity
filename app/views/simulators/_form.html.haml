@@ -1,0 +1,13 @@
+= form_for @simulator do |f|
+  - if @simulator.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@simulator.errors.count, "error")} prohibited this simulator from being saved:"
+      %ul
+        - @simulator.errors.full_messages.each do |message|
+          %li= message
+
+  .field
+    = f.label :patient_id
+    = f.number_field :patient_id
+  .actions
+    = f.submit 'Save'

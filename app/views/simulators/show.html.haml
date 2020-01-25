@@ -1,0 +1,9 @@
+%p#notice= notice
+
+%p
+  %b Patient:
+  = @simulator.patient_id
+
+= link_to 'Edit', edit_simulator_path(@simulator)
+\|
+= link_to 'Back', simulators_path

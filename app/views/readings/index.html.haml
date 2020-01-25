@@ -1,0 +1,37 @@
+%h1 Listing readings
+
+%table
+  %thead
+    %tr
+      %th Reading
+      %th Hash
+      %th Timestamp
+      %th
+      %th
+
+  %tbody
+    - @readings.each do |reading|
+      %tr
+        %td= reading.reading_value
+        %td= reading.blockchain_hash
+        %td= reading.created_at
+        %td
+          %a{:href => verify_patient_reading_path(@patient, reading), "data-remote" => 'true'}
+            Verify
+        %td= link_to 'Temper', temper_patient_reading_path(@patient, reading)
+        %td= link_to 'Temper', temper_patient_reading_path(@patient, reading)
+%br
+
+= link_to 'New Reading', new_patient_reading_path(@patient)
+= link_to 'Back', patients_path
+
+
+.modal.fade{"aria-labelledby" => "myModalLabel", :role => "dialog", :tabindex => "-1", id: "match_results"}
+  .modal-dialog{:role => "document"}
+    .modal-content
+      .modal-header
+        %button.close{"aria-label" => "Close", "data-dismiss" => "modal", :type => "button"}
+          %span{"aria-hidden" => "true"} &times;
+        %h4#myModalLabel.modal-title Verification for reading
+      .modal-body
+        
