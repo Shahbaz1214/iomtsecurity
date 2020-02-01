@@ -2,8 +2,10 @@ Rails.application.routes.draw do
   resources :patients do
     resources :readings do
       member do
-        get :verify
         get :temper
+      end
+      collection do
+        get :verify
       end
     end
     resources :simulators 

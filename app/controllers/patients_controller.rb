@@ -1,4 +1,5 @@
 class PatientsController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_patient, only: [:show, :edit, :update, :destroy]
 
   # GET /patients
@@ -33,7 +34,7 @@ class PatientsController < ApplicationController
   # PATCH/PUT /patients/1
   def update
     if @patient.update(patient_params)
-      redirect_to @patient, notice: 'Patient was successfully updated.'
+      redirect_to :back, notice: 'Patient was successfully updated.'
     else
       render :edit
     end
@@ -53,6 +54,6 @@ class PatientsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def patient_params
-      params.require(:patient).permit(:name)
+      params.require(:patient).permit(:name, :feedback)
     end
 end

@@ -1,6 +1,7 @@
 class ReadingsController < ApplicationController
-  before_action :set_reading, only: [:show, :edit, :update, :destroy, :verify, :temper]
+  before_action :set_reading, only: [:show, :edit, :update, :destroy, :temper]
   before_action :set_patient
+  before_action :authenticate_user!
   # GET /readings
   def index
     @readings = @patient.readings.all.order('created_at asc')
@@ -46,14 +47,16 @@ class ReadingsController < ApplicationController
   end
 
   def verify
-    blockchain_hash = Block.first("#{@reading.reading_value}-#{@reading.created_at}").transactions_hash
-    @message = "Matched"
-    if blockchain_hash != @reading.blockchain_hash
-      @message = "Tempered"
+    @patient.readings.each do |reading|
+      blockchain_hash = Block.first("#{reading.reading_value}-#{reading.created_at}").transactions_hash
+      if blockchain_hash != reading.blockchain_hash
+        reading.update_column(:verification_status, 2)
+      else
+        reading.update_column(:verification_status, 1)
+      end
     end
-
     respond_to do |format|
-      format.js { }
+      format.html { redirect_to :back }
     end
   end
 

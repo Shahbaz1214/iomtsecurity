@@ -1,6 +1,7 @@
 class SimulatorsController < ApplicationController
   before_action :set_simulator, only: [:show, :edit, :update, :destroy]
   before_action :set_patient
+  before_action :authenticate_user!
   # GET /simulators
   def index
     @simulators = Simulator.all

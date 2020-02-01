@@ -1,22 +1,47 @@
-%h1 Listing patients
+%script{:src => "//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"}
+%link#bootstrap-css{:href => "//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css", :rel => "stylesheet"}/
+%script{:src => "//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"}
 
-%table
-  %thead
-    %tr
-      %th Name
-      %th
-      %th
-      %th
+.col-md-12.text-center.bg-dark.text-white.p10.p-3
+  %h3.d-inline= "#{current_user.role.titleize}'s Portal"
+  = link_to('Logout', destroy_user_session_path, method: :delete, class: 'btn btn-primary text-white pull-right')
 
-  %tbody
-    - @patients.each do |patient|
-      %tr
-        %td= patient.name
-        %td= link_to 'Readings', patient_readings_path(patient)
-        %td= link_to 'Simulate', patient_simulators_path(patient)
-        %td= link_to 'Edit', edit_patient_path(patient)
-        %td= link_to 'Destroy', patient, method: :delete, data: { confirm: 'Are you sure?' }
+.container.mt-10
+  .row{style: "margin-top: 10%;"}
+    .col-md-10.col-md-offset-1
+      .panel.panel-default.panel-table
+        .panel-heading
+          .row
+            .col.col-xs-6
+              %h3.panel-title Patient list
+        .panel-body
+          %table#mytable.table.table-striped.table-bordered.table-list
+            %thead
+              %tr
+                %th.hidden-xs ID
+                %th.hidden-xs Name
+                %th.col-text Age
+                %th.col-text Action
+            %tbody
+              - @patients.order('id').each do |patient|
+                %tr
+                  %td= patient.id
+                  %td= patient.name
+                  %td= patient.age
+                  %td
+                    =# link_to 'Simulate', patient_simulators_path(patient)
+                    - if current_user.role == "doctor"
+                      %a.btn.btn-danger.text-white{href: patient_readings_path(patient)}
+                        %span.fa.fa-heartbeat{"aria-hidden" => "true"}
+                      %a.btn.btn-primary.text-white.ml-2.pl-3.pr-3{href: ""}
+                        %span.fa.fa-file-medical-alt{"aria-hidden" => "true"}
 
-%br
-
-= link_to 'New Patient', new_patient_path
+                      %a.btn.btn-warning.text-white.ml-2.pl-3.pr-3{href: ""}
+                        %span.fa.fa-thermometer-empty{"aria-hidden" => "true"}
+                    -else
+                      %a.btn.btn-danger.text-white{href: patient_readings_path(patient)}
+                        %span.fa.fa-heartbeat{"aria-hidden" => "true"}
+                      
+             
+        
+ 
