@@ -9,6 +9,7 @@ class PatientsController < ApplicationController
 
   # GET /patients/1
   def show
+    @patient.update_column(:is_read, true)
   end
 
   # GET /patients/new
@@ -54,6 +55,6 @@ class PatientsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def patient_params
-      params.require(:patient).permit(:name, :feedback)
+      params.require(:patient).permit(:name, :feedback, :is_read)
     end
 end

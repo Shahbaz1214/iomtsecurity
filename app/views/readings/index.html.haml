@@ -1,99 +1,98 @@
-%script{:src => "//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"}
-%link#bootstrap-css{:href => "//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css", :rel => "stylesheet"}/
-%script{:src => "//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"}
+- if current_user.role == "doctor"
+  %script{:src => "//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"}
+  %link#bootstrap-css{:href => "//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css", :rel => "stylesheet"}/
+  %script{:src => "//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"}
 
-.col-md-12.text-center.bg-dark.text-white.p10.p-3
-  %h3.d-inline Doctor's Portal
-  = link_to('Logout', destroy_user_session_path, method: :delete, class: 'btn btn-primary text-white pull-right')
+  .col-md-12.text-center.bg-dark.text-white.p10.p-3
+    %h3.d-inline Doctor's Portal
+    = link_to('Logout', destroy_user_session_path, method: :delete, class: 'btn btn-primary text-white pull-right')
 
 
-.container.mt-10
-  .row{style: "margin-top: 10%;"}
-    .col-md-10.col-md-offset-1
-      .panel.panel-default.panel-table
-        .panel-heading
-          .row
-            .col.col-xs-6
-              %h3.panel-title.d-inline= "#{@patient.name} Reading"
-              %p.d-inline{ style: "margin-left: 25%; font-size: 15px; font-weight: bold;" }
-                Average Heartbeat: 
-                = @readings.where(verification_status: 1).pluck(:reading_value).map(&:to_f).reduce(:+)/@readings.where(verification_status: 1).count rescue 0
+  .container.mt-10
+    .row{style: "margin-top: 10%;"}
+      .col-md-10.col-md-offset-1
+        .panel.panel-default.panel-table
+          .panel-heading
+            .row
+              .col.col-xs-6
+                %h3.panel-title.d-inline= "#{@patient.name} Reading"
+                %p.d-inline{ style: "margin-left: 25%; font-size: 15px; font-weight: bold;" }
+                  Average Heartbeat: 
+                  = @readings.where(verification_status: 1).pluck(:reading_value).map(&:to_f).reduce(:+)/@readings.where(verification_status: 1).count rescue 0
 
-              
-              = link_to('Verify', verify_patient_readings_path(@patient), class: 'btn btn-primary text-white pull-right')
-              %button.btn.btn-warning.text-white.pull-right.mr-2{"data-target" => "#match_results", "data-toggle" => "modal", :type => "button"}
-                Feedback
+                
+                = link_to('Verify', verify_patient_readings_path(@patient), class: 'btn btn-primary text-white pull-right')
+                %button.btn.btn-warning.text-white.pull-right.mr-2{"data-target" => "#match_results", "data-toggle" => "modal", :type => "button"}
+                  Feedback
 
-              = link_to('Back', patients_path, class: 'btn btn-danger text-white pull-right mr-2')
-              
+                = link_to('Back', patients_path, class: 'btn btn-danger text-white pull-right mr-2')
+                
 
-        .panel-body
-          %table#mytable.table.table-striped.table-bordered.table-list
-            %thead
-              %tr
-                %th.hidden-xs ID
-                %th.hidden-xs Value
-                %th.col-text Hash
-                %th.col-text Verification Status
-            %tbody
-              - @readings.order('id').each do |reading|
+          .panel-body
+            %table#mytable.table.table-striped.table-bordered.table-list
+              %thead
                 %tr
-                  %td= reading.id
-                  %td= reading.reading_value
-                  %td= reading.blockchain_hash
-                  %td.text-center
-                    - if reading.verified?
-                      .dot
-                        .fa.fa-check.text-white{style: "margin-top: 6px !important;"}
-                    - elsif reading.tempered?
-                      .red-dot
-                        .fa.fa-times.text-white{style: "margin-top: 6px !important;"}
-                    - else
-                      .grey-dot
-                        .fa.fa-question.text-white{style: "margin-top: 6px !important;"}
+                  %th.hidden-xs ID
+                  %th.hidden-xs Value
+                  %th.col-text Hash
+                  %th.col-text Verification Status
+              %tbody
+                - @readings.order('id').each do |reading|
+                  %tr
+                    %td= reading.id
+                    %td= reading.reading_value
+                    %td= reading.blockchain_hash
+                    %td.text-center
+                      - if reading.verified?
+                        .dot
+                          .fa.fa-check.text-white{style: "margin-top: 6px !important;"}
+                      - elsif reading.tempered?
+                        .red-dot
+                          .fa.fa-times.text-white{style: "margin-top: 6px !important;"}
+                      - else
+                        .grey-dot
+                          .fa.fa-question.text-white{style: "margin-top: 6px !important;"}
 
-                    
-.modal{:role => "dialog", :tabindex => "-1", id: "match_results"}
-  .modal-dialog{:role => "document"}
-    .modal-content
-      .modal-header
-        %h5.modal-title Add Feedback
-        %button.close{"aria-label" => "Close", "data-dismiss" => "modal", :type => "button"}
-          %span{"aria-hidden" => "true"} ×
-      = form_for @patient do |f| 
-        .modal-body
-          
-          .field
-            = f.label :feedback
-            = f.text_area :feedback, class: 'form-control', required: true, rows: "5"
-        .modal-footer
-          = f.submit 'Save', class: 'btn btn-primary'
-          %button.btn.btn-secondary{"data-dismiss" => "modal", :type => "button"} Close
+                      
+  .modal{:role => "dialog", :tabindex => "-1", id: "match_results"}
+    .modal-dialog{:role => "document"}
+      .modal-content
+        .modal-header
+          %h5.modal-title Add Feedback
+          %button.close{"aria-label" => "Close", "data-dismiss" => "modal", :type => "button"}
+            %span{"aria-hidden" => "true"} ×
+        = form_for @patient do |f| 
+          .modal-body
+            
+            .field
+              = f.label :feedback
+              = f.text_area :feedback, class: 'form-control', required: true, rows: "5"
+              = hidden_field_tag "patient[is_read]", false
+          .modal-footer
+            = f.submit 'Save', class: 'btn btn-primary'
+            %button.btn.btn-secondary{"data-dismiss" => "modal", :type => "button"} Close
 
 
-:css
-  .dot {
-    height: 25px;
-    width: 25px;
-    background-color: green;
-    border-radius: 50%;
-    display: inline-block;
-  }
-  .red-dot {
-    height: 25px;
-    width: 25px;
-    background-color: red;
-    border-radius: 50%;
-    display: inline-block;
-  }
-  .grey-dot {
-    height: 25px;
-    width: 25px;
-    background-color: grey;
-    border-radius: 50%;
-    display: inline-block;
-  }
-
-  :javascript
-
+  :css
+    .dot {
+      height: 25px;
+      width: 25px;
+      background-color: green;
+      border-radius: 50%;
+      display: inline-block;
+    }
+    .red-dot {
+      height: 25px;
+      width: 25px;
+      background-color: red;
+      border-radius: 50%;
+      display: inline-block;
+    }
+    .grey-dot {
+      height: 25px;
+      width: 25px;
+      background-color: grey;
+      border-radius: 50%;
+      display: inline-block;
+    }
 
