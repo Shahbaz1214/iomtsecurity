@@ -13,7 +13,7 @@ class SimulatorsController < ApplicationController
 
   # GET /simulators/new
   def new
-    @patient = Patient.find(patient_id)
+    @patient = Patient.find(params[:patient_id])
     (1..5).each do |a|
       if @patient.id == 1
         value = rand(60..70)
