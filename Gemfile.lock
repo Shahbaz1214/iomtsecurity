@@ -183,6 +183,8 @@ GEM
     tilt (2.0.10)
     tzinfo (1.2.6)
       thread_safe (~> 0.1)
+    uglifier (4.1.20)
+      execjs (>= 0.3.0, < 3)
     warden (1.2.8)
       rack (>= 2.0.6)
     web-console (2.3.0)
@@ -210,6 +212,7 @@ DEPENDENCIES
   sass-rails
   sidekiq (~> 5.2.7)
   spring
+  uglifier
   web-console (~> 2.0)
 
 BUNDLED WITH
