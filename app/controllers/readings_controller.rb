@@ -1,5 +1,5 @@
 class ReadingsController < ApplicationController
-  before_action :set_reading, only: [:show, :edit, :update, :destroy, :temper]
+  before_action :set_reading, only: [:show, :edit, :update, :destroy]
   before_action :set_patient
   before_action :authenticate_user!
   # GET /readings
@@ -61,8 +61,20 @@ class ReadingsController < ApplicationController
   end
 
   def temper
-    @reading.update_column(:reading_value, @reading.reading_value.to_i + 1)
-    redirect_to patient_readings_path(@patient), notice: 'Reading was successfully updated.'
+    @patient.readings.last(2).each do |reading|
+      reading.update_column(:reading_value, reading.reading_value.to_i + 1)
+    end
+    @patient.readings.each do |reading|
+      blockchain_hash = Block.first("#{reading.reading_value}-#{reading.created_at}").transactions_hash
+      if blockchain_hash != reading.blockchain_hash
+        reading.update_column(:verification_status, 2)
+      else
+        reading.update_column(:verification_status, 1)
+      end
+    end
+    respond_to do |format|
+      format.html { redirect_to patient_readings_path(@patient) }
+    end
   end
 
   private

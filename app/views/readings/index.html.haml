@@ -25,6 +25,8 @@
                 %button.btn.btn-warning.text-white.pull-right.mr-2{"data-target" => "#match_results", "data-toggle" => "modal", :type => "button"}
                   Feedback
 
+                = link_to('Temper', temper_patient_readings_path(@patient), class: 'btn btn-danger text-white pull-right mr-2')
+
                 = link_to('Back', patients_path, class: 'btn btn-danger text-white pull-right mr-2')
                 
 
