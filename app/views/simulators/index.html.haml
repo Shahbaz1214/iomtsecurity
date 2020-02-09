@@ -1,2 +1,10 @@
-%h1 Simulator
-= link_to 'Start Simulator', new_patient_simulator_path
+%script{:src => "//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"}
+%link#bootstrap-css{:href => "//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css", :rel => "stylesheet"}/
+%script{:src => "//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"}
+
+.col-md-12.text-center.bg-dark.text-white.p10.p-3
+  %h3.d-inline= "#{current_user.role.titleize}'s Portal"
+  = link_to('Logout', destroy_user_session_path, method: :delete, class: 'btn btn-primary text-white pull-right')
+
+= link_to 'Start Simulator', new_patient_simulator_path, class: 'btn btn-primary text-white text-center', style: "margin-left: 42%; margin-top: 20%; font-size: 31px;"
+

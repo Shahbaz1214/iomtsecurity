@@ -35,7 +35,9 @@ class PatientsController < ApplicationController
   # PATCH/PUT /patients/1
   def update
     if @patient.update(patient_params)
-      redirect_to :back, notice: 'Patient was successfully updated.'
+      respond_to do |format|
+        format.html { redirect_to patient_readings_path(@patient) }
+      end
     else
       render :edit
     end

@@ -18,7 +18,7 @@
                 %h3.panel-title.d-inline= "#{@patient.name} Reading"
                 %p.d-inline{ style: "margin-left: 25%; font-size: 15px; font-weight: bold;" }
                   Average Heartbeat: 
-                  = @readings.where(verification_status: 1).pluck(:reading_value).map(&:to_f).reduce(:+)/@readings.where(verification_status: 1).count rescue 0
+                  = (@readings.where(verification_status: 1).pluck(:reading_value).map(&:to_f).reduce(:+)/@readings.where(verification_status: 1).count).round(2) rescue 0
 
                 
                 = link_to('Verify', verify_patient_readings_path(@patient), class: 'btn btn-primary text-white pull-right')
@@ -27,7 +27,7 @@
 
                 = link_to('Temper', temper_patient_readings_path(@patient), class: 'btn btn-danger text-white pull-right mr-2')
 
-                = link_to('Back', patients_path, class: 'btn btn-danger text-white pull-right mr-2')
+                = link_to('Simulators', patient_simulators_path(@patient), class: 'btn btn-danger text-white pull-right mr-2')
                 
 
           .panel-body
