@@ -56,7 +56,7 @@ class ReadingsController < ApplicationController
       end
     end
     respond_to do |format|
-      format.html { redirect_to :back }
+      format.html { redirect_to patient_readings_path(@patient) }
     end
   end
 
