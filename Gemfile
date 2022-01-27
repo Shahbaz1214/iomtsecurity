@@ -20,7 +20,7 @@ gem 'jquery-rails'
 gem 'haml-rails'
 gem 'bootstrap-sass'
 gem 'blockchain-lite', '~> 1.4'
-gem 'sidekiq', '~> 5.2.7'
+gem 'sidekiq', '~> 6.4.0'
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 # bundle exec rake doc:rails generates the API under doc/api.
